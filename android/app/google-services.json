@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "536370869887",
+    "project_id": "speech-to-text-chat-app",
+    "storage_bucket": "speech-to-text-chat-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536370869887:android:8148ebe1788da5ac59314a",
+        "android_client_info": {
+          "package_name": "com.ashique.ninjastudy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536370869887-bp63hvqtmjh2feice367vekkc0jcnqtd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ashique.ninjastudy",
+            "certificate_hash": "7c6b3ed3afcef08415f5b53157b0f514ea99d533"
+          }
+        },
+        {
+          "client_id": "536370869887-68314bbr8k6fogcncgc93lidmpd491n6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiyGcFL8WxiUQ_q1zDpCqqdlCSoNkGmkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536370869887-68314bbr8k6fogcncgc93lidmpd491n6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
