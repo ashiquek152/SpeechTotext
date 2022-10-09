@@ -10,32 +10,35 @@ import 'package:ninjastudy/app/widgets/snackbar_cutom.dart';
 class HomeController extends GetxController {
   final random = Random();
 
-  RxBool isLoading = false.obs;
+  bool isLoading = false;
   List usersList = [];
-  final fireBaseDBHelper =FireBaseDBHelper();
+  final fireBaseDBHelper = FireBaseDBHelper();
 
   Future<void> pickRandomUsers() async {
-    isLoading.value = true;
+    isLoading = true;
     update();
     try {
       usersList.clear();
       usersList = await fireBaseDBHelper.getAllUser();
       if (usersList.isEmpty) {
         snackBarCustom(title: "", message: "No users found");
-        isLoading.value = false;
+        isLoading = false;
         update();
         return;
       }
       var currentUser = FirebaseAuth.instance.currentUser;
-      await currentUser?.reload();
-      currentUser  = FirebaseAuth.instance.currentUser;
 
+      if (currentUser == null) {
+        await currentUser?.reload();
+        currentUser = FirebaseAuth.instance.currentUser;
+      }
       var randomUser = usersList[random.nextInt(usersList.length)];
 
 //? HANDLING MATCHING WITH THE SAME USER LOGGED IN
 
-      if (randomUser["email"] == currentUser!.email) {
-        isLoading.value = false;
+      if (randomUser["email"].toString().toLowerCase() ==
+          currentUser?.email.toString().toLowerCase()) {
+        isLoading = false;
         update();
         randomUser = usersList[random.nextInt(usersList.length)];
         snackBarCustom(title: "No users found", message: "Click one more time");
@@ -43,12 +46,12 @@ class HomeController extends GetxController {
       } else {
         await fireBaseDBHelper.createChatConversations(
             reciver: randomUser["uid"], reciverEmail: randomUser["email"]);
-        isLoading.value = false;
+        isLoading = false;
         update();
         return;
       }
     } catch (e) {
-      isLoading.value = false;
+      isLoading = false;
       update();
       debugPrint(e.toString());
       snackBarCustom(

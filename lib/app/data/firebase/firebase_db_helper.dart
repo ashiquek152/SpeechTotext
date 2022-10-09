@@ -8,13 +8,12 @@ import 'package:ninjastudy/app/models/user_model.dart';
 import 'package:ninjastudy/app/modules/chatscreen/views/chatscreen_view.dart';
 
 class FireBaseDBHelper {
-   final chatsRoomRef = FirebaseFirestore.instance.collection("CHATROOM");
-   final usersRef = FirebaseFirestore.instance.collection("USERS");
-   final currentUser = FirebaseAuth.instance.currentUser;
+  final chatsRoomRef = FirebaseFirestore.instance.collection("CHATROOM");
+  final usersRef = FirebaseFirestore.instance.collection("USERS");
+  var currentUser = FirebaseAuth.instance.currentUser;
 
 //! //////////////////// --- CREATING NEW USER IN COLLECTION --- //////////////////////////////
-   Future<void> createUserInCollection(
-      {required UserModel userModel}) async {
+  Future<void> createUserInCollection({required UserModel userModel}) async {
     try {
       usersRef.doc(userModel.userEmail).set({
         "email": userModel.userEmail,
@@ -30,8 +29,10 @@ class FireBaseDBHelper {
 
 //! //////////////////// --- CREATE CHAT CONVERSATION AND ROOM FIRST TIME --- ////////////////////
 
-   Future<void> createChatConversations(
+  Future<void> createChatConversations(
       {required String reciver, required String reciverEmail}) async {
+    await currentUser?.reload();
+    currentUser = FirebaseAuth.instance.currentUser;
     try {
       if (currentUser != null) {
         String chatRoomID = await checkExistingChatroomID(
@@ -63,7 +64,7 @@ class FireBaseDBHelper {
 
 //! ///////////////// --- CHECK EXISTING CHATROOMID --- ////////////////////
 
-   Future<String> checkExistingChatroomID(
+  Future<String> checkExistingChatroomID(
       {required String sender, required String reciver}) async {
     String roomId1 = createChatRoomID(sender, reciver);
     String roomId2 = createChatRoomID2(reciver, sender);
@@ -84,7 +85,7 @@ class FireBaseDBHelper {
 
 //! ////////// --- CREATING CHAT ROOM IF NOT EXISTING --- /////////////////////
 
-   Future<void> createNewChatRoom(
+  Future<void> createNewChatRoom(
       {required String chatRoomID,
       required Map<String, dynamic> usersMap}) async {
     return await chatsRoomRef
@@ -96,7 +97,7 @@ class FireBaseDBHelper {
 
 //! ///////////////// --- GET ALL USERS --- /////////////////////////////
 
-   Future<List> getAllUser() async {
+  Future<List> getAllUser() async {
     List allusers = [];
     await usersRef.get().then((value) {
       allusers.clear();
@@ -112,7 +113,7 @@ class FireBaseDBHelper {
 
 //! /////// --- CREATING POSSIBLE ROOMID'S --- //////////////////
 
-   String createChatRoomID(String a, String b) {
+  String createChatRoomID(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
       return "${b}_$a";
     } else {
@@ -120,7 +121,7 @@ class FireBaseDBHelper {
     }
   }
 
-   String createChatRoomID2(String a, String b) {
+  String createChatRoomID2(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
       return "${a}_$b";
     } else {
